@@ -39,12 +39,35 @@ namespace Cry_AES_File.Utils
                 managed.KeySize = 128;
             }
             managed.GenerateKey();
+            managed.GenerateIV();
             //byte[] IVBlock = managed.IV;
             //byte[] KeyBlock = managed.Key;
         }
 
 
+        /// <summary>
+        /// 返回加密密钥
+        /// </summary>
+        /// <returns></returns>
+        public byte[] GenerateKey()
+        {
+            return managed.Key;
+        }
 
+        /// <summary>
+        /// 返回初始向量
+        /// </summary>
+        /// <returns></returns>
+        public byte[] GenerateIV()
+        {
+            return managed.IV;
+        }
+
+        /// <summary>
+        /// 信息的加密与解密
+        /// </summary>
+        /// <param name="Info"></param>
+        /// <returns></returns>
         public byte[] InfoCry(string Info)
         {
             byte[] tempInfoBytes = Encoding.UTF8.GetBytes(Info);
@@ -174,6 +197,50 @@ namespace Cry_AES_File.Utils
                         }
                     }
                 }
+                return 0;
+            }
+            else
+            {
+                return -1;
+            }
+        }
+
+        /// <summary>
+        /// 给定密钥加密文件
+        /// </summary>
+        /// <param name="filePath"></param>
+        /// <param name="key"></param>
+        /// <param name="IV"></param>
+        /// <returns></returns>
+        public int EncryFile(string filePath,byte[] key,byte[] IV)
+        {
+            if(File.Exists(filePath))
+            {
+                managed.Key = key;
+                managed.IV = IV;
+                EncryFile(filePath);
+                return 0;
+            }
+            else
+            {
+                return -1;
+            }
+        }
+
+        /// <summary>
+        /// 给定密钥进行解密
+        /// </summary>
+        /// <param name="filePath"></param>
+        /// <param name="key"></param>
+        /// <param name="IV"></param>
+        /// <returns></returns>
+        public int DecryFile(string filePath,byte[] key,byte[] IV)
+        {
+            if(File.Exists(filePath))
+            {
+                managed.Key = key;
+                managed.IV = IV;
+                DecryFile(filePath);
                 return 0;
             }
             else
