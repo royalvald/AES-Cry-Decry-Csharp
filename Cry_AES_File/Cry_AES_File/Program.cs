@@ -11,14 +11,9 @@ namespace Cry_AES_File
     {
         static void Main(string[] args)
         {
-            cryTool tool = new cryTool(128);
-            /*byte[] cryBlock= tool.InfoCry("hello world");
-            Console.WriteLine(Encoding.UTF8.GetString(cryBlock));
-
-            string s1 = tool.BytesDecry(cryBlock);
-            Console.WriteLine(s1);*/
-            tool.CompareKeyChange();
-
+            cryTool tool = new cryTool(cryTool.Cry_KeySize.Key_128);
+            tool.EncryFile(@"F://x1.txt");
+            tool.DecryFile(@"F://x1.dat");
             Console.ReadLine();
         }
     }

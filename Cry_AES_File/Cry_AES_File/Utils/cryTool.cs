@@ -87,25 +87,25 @@ namespace Cry_AES_File.Utils
 
                 FileStream fs = File.Open(filePath, FileMode.Open);
 
-                if (fs.Length < 1024 * 1024)
-                {
-                    using (FileStream writeStream = File.Create(Encry_Full_Name))
-                    {
-                        using (CryptoStream crypto = new CryptoStream(writeStream, managed.CreateEncryptor(), CryptoStreamMode.Write))
-                        {
-                            byte[] NameBlock = Encoding.UTF8.GetBytes(fileName);
-                            byte[] InfoBlock = new byte[fs.Length + NameBlock.Length + 4];
-                            byte[] NameCount = BitConverter.GetBytes(NameBlock.Length);
+                /* if (fs.Length < 1024 * 1024)
+                 {
+                     using (FileStream writeStream = File.Create(Encry_Full_Name))
+                     {
+                         using (CryptoStream crypto = new CryptoStream(writeStream, managed.CreateEncryptor(), CryptoStreamMode.Write))
+                         {
+                             byte[] NameBlock = Encoding.UTF8.GetBytes(fileName);
+                             byte[] InfoBlock = new byte[fs.Length + NameBlock.Length + 4];
+                             byte[] NameCount = BitConverter.GetBytes(NameBlock.Length);
 
-                            Array.Copy(NameCount, 0, InfoBlock, 0, 4);
-                            Array.Copy(NameBlock, 0, InfoBlock, 4, NameBlock.Length);
+                             Array.Copy(NameCount, 0, InfoBlock, 0, 4);
+                             Array.Copy(NameBlock, 0, InfoBlock, 4, NameBlock.Length);
 
-                            fs.Read(InfoBlock, NameBlock.Length, (int)fs.Length);
-                            crypto.Write(InfoBlock, 0, InfoBlock.Length);
-                        }
-                    }
-                }
-                else
+                             fs.Read(InfoBlock, NameBlock.Length, (int)fs.Length);
+                             crypto.Write(InfoBlock, 0, InfoBlock.Length);
+                         }
+                     }
+                 }
+                 else*/
                 {
                     //文件较大只能进行循环读取
                     using (FileStream writeStream = File.Create(Encry_Full_Name))
@@ -140,11 +140,40 @@ namespace Cry_AES_File.Utils
             }
         }
 
+        /// <summary>
+        /// 文件解密
+        /// </summary>
+        /// <param name="filePath"></param>
+        /// <returns></returns>
         public int DecryFile(string filePath)
         {
-            if(File.Exists(filePath))
+            if (File.Exists(filePath))
             {
+                using (FileStream fs = File.Open(filePath, FileMode.Open))
+                {
+                    using (CryptoStream crypto = new CryptoStream(fs, managed.CreateDecryptor(), CryptoStreamMode.Read))
+                    {
+                        byte[] NameCount = new byte[4];
+                        crypto.Read(NameCount, 0, 4);
+                        int NameLength = BitConverter.ToInt32(NameCount, 0);
+                        byte[] NameBlock = new byte[NameLength];
+                        crypto.Read(NameBlock, 0, NameLength);
+                        string fileName = Encoding.UTF8.GetString(NameBlock);
 
+                        byte[] infoBytes = new byte[1024];
+                        using (FileStream writeStream = File.Create(@"E://"+ fileName))
+                        {
+                            int count = 4 + NameLength, size = 0;
+                            int FileLength = (int)fs.Length;
+                            do
+                            {
+                                size = crypto.Read(infoBytes, 0, 1024);
+                                writeStream.Write(infoBytes, 0, size);
+                                count += size;
+                            } while (size > 0);
+                        }
+                    }
+                }
                 return 0;
             }
             else
