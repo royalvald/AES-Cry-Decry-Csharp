@@ -1,2 +1,2 @@
-# AES Cryption and Decryption in File's decryption with language for C#
+# AES Encryption and Decryption in File's encryption with language for C#
 
