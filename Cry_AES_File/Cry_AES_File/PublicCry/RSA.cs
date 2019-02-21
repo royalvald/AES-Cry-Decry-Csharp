@@ -11,6 +11,8 @@ namespace Cry_AES_File.PublicCry
     class RSA
     {
         private int RsaSize = 0;
+        private int DecryptionSize = 0;
+        private int EncryptionSize = 0;
 
         public RSAParameters PublicKey { private set; get; }
         private RSAParameters SecrectKey { set; get; }
@@ -23,6 +25,8 @@ namespace Cry_AES_File.PublicCry
             this.RsaSize = keySize;
             this.SecrectKey = rsa.ExportParameters(true);
             this.PublicKey = rsa.ExportParameters(false);
+            this.DecryptionSize = keySize / 8;
+            this.EncryptionSize = keySize / 8 - 11;
         }
 
 
@@ -116,7 +120,7 @@ namespace Cry_AES_File.PublicCry
                     rsa = new RSACryptoServiceProvider(RsaSize);
                     rsa.ImportParameters(this.PublicKey);
 
-                    byte[] readBlock = new byte[1024];
+                    byte[] readBlock = new byte[EncryptionSize];
                     int size = 0, count = 0;
                     byte[] writeBlcok;
                     using (FileStream writeStream = File.Create(saveName))
@@ -125,7 +129,7 @@ namespace Cry_AES_File.PublicCry
                         writeStream.Write(NameBlock, 0, NameBlock.Length);
                         while (count < fs.Length)
                         {
-                            size = fs.Read(readBlock, 0, 1024);
+                            size = fs.Read(readBlock, 0, EncryptionSize);
                             writeBlcok = Encrypt(readBlock, 0, size, false);
                             writeStream.Write(writeBlcok, 0, writeBlcok.Length);
                             count += size;
@@ -160,14 +164,14 @@ namespace Cry_AES_File.PublicCry
 
 
                     //解密文件
-                    byte[] readBlock = new byte[1024];
+                    byte[] readBlock = new byte[DecryptionSize];
                     byte[] writeBlock;
                     int count = 0, size = 0;
-                    using (FileStream writeStream = File.Create(@"E://" + fileName))
+                    using (FileStream writeStream = File.Create(@"D://" + fileName))
                     {
                         while (count < fs.Length - 4 - Length)
                         {
-                            size = fs.Read(readBlock, 0, 1024);
+                            size = fs.Read(readBlock, 0, DecryptionSize);
                             writeBlock = Decrypt(readBlock, 0, size, false);
                             writeStream.Write(writeBlock, 0, writeBlock.Length);
                             count += size;
@@ -197,6 +201,8 @@ namespace Cry_AES_File.PublicCry
             this.RsaSize = size;
             rsa = new RSACryptoServiceProvider(size);
 
+            this.DecryptionSize = size / 8;
+            this.EncryptionSize = size / 8 - 11;
             return 0;
         }
     }

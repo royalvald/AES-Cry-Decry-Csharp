@@ -12,10 +12,11 @@ namespace Cry_AES_File
     {
         static void Main(string[] args)
         {
-            cryTool tool = new cryTool(cryTool.Cry_KeySize.Key_128);
-            //RSA tool = new RSA(10000);
-            tool.EncryFile(@"F://x1.pdf");
-            tool.DecryFile(@"F://x1.dat");
+            //cryTool tool = new cryTool(cryTool.Cry_KeySize.Key_128);
+            RSA tool = new RSA(8192);
+            tool.EncryptFile(@"D://x1.pdf");
+            tool.DecryptFile(@"D://x1.dat");
+            Console.WriteLine("finshed");
             Console.ReadLine();
         }
     }
