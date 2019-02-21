@@ -3,7 +3,7 @@ Microsoft Visual Studio Solution File, Format Version 12.00
 # Visual Studio 15
 VisualStudioVersion = 15.0.28307.421
 MinimumVisualStudioVersion = 10.0.40219.1
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Cry_AES_File", "Cry_AES_File\Cry_AES_File.csproj", "{5954D790-2120-4FD8-8AB7-8459924ABB07}"
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Cry_File_Info", "Cry_AES_File\Cry_File_Info.csproj", "{5954D790-2120-4FD8-8AB7-8459924ABB07}"
 EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution

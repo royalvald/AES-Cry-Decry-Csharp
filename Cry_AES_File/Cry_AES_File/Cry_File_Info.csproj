@@ -45,11 +45,13 @@
   <ItemGroup>
     <Compile Include="Program.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
-    <Compile Include="Utils\AESEncryption.cs" />
-    <Compile Include="Utils\cryTool.cs" />
+    <Compile Include="AES\AESEncryption.cs" />
+    <Compile Include="AES\cryTool.cs" />
+    <Compile Include="PublicCry\RSA.cs" />
   </ItemGroup>
   <ItemGroup>
     <None Include="App.config" />
   </ItemGroup>
+  <ItemGroup />
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
 </Project>
