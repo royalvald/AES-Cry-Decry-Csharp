@@ -113,6 +113,9 @@ namespace Cry_AES_File.PublicCry
                     byte[] NameBlock = Encoding.UTF8.GetBytes(fileName);
                     byte[] NameLength = BitConverter.GetBytes(NameBlock.Length);
 
+                    rsa = new RSACryptoServiceProvider(RsaSize);
+                    rsa.ImportParameters(this.PublicKey);
+
                     byte[] readBlock = new byte[1024];
                     int size = 0, count = 0;
                     byte[] writeBlcok;
@@ -151,6 +154,10 @@ namespace Cry_AES_File.PublicCry
                     fs.Read(NameBlock, 0, Length);
                     string fileName = Encoding.UTF8.GetString(NameBlock);
                     string fileDir = Path.GetDirectoryName(filePath);
+
+                    rsa = new RSACryptoServiceProvider(RsaSize);
+                    rsa.ImportParameters(this.SecrectKey);
+
 
                     //解密文件
                     byte[] readBlock = new byte[1024];
