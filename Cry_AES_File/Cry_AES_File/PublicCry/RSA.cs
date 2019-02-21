@@ -155,9 +155,16 @@ namespace Cry_AES_File.PublicCry
                     //解密文件
                     byte[] readBlock = new byte[1024];
                     byte[] writeBlock;
+                    int count = 0, size = 0;
                     using (FileStream writeStream = File.Create(fileDir + fileName))
                     {
-                        fs.Read
+                        while (count < fs.Length - 4 - Length)
+                        {
+                            size = fs.Read(readBlock, 0, 1024);
+                            writeBlock = Decrypt(readBlock, 0, size, false);
+                            writeStream.Write(writeBlock, 0, writeBlock.Length);
+                            count += size;
+                        }
                     }
                 }
                     return 0;
