@@ -1,4 +1,5 @@
-﻿using Cry_AES_File.Utils;
+﻿using Cry_AES_File.PublicCry;
+using Cry_AES_File.Utils;
 using System;
 using System.Collections.Generic;
 using System.Linq;
@@ -11,9 +12,10 @@ namespace Cry_AES_File
     {
         static void Main(string[] args)
         {
-            cryTool tool = new cryTool(cryTool.Cry_KeySize.Key_128);
-            tool.EncryFile(@"F://x1.txt");
-            tool.DecryFile(@"F://x1.dat");
+            //cryTool tool = new cryTool(cryTool.Cry_KeySize.Key_128);
+            RSA tool = new RSA();
+            tool.EncryptFile(@"F://x1.txt");
+            tool.DecryptFile(@"F://x1.dat");
             Console.ReadLine();
         }
     }

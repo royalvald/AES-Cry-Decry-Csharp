@@ -16,7 +16,7 @@ namespace Cry_AES_File.PublicCry
         private RSAParameters SecrectKey { set; get; }
 
         RSACryptoServiceProvider rsa;
-        public RSA(int keySize = 128)
+        public RSA(int keySize = 400)
         {
 
             rsa = new RSACryptoServiceProvider(keySize);
@@ -156,7 +156,7 @@ namespace Cry_AES_File.PublicCry
                     byte[] readBlock = new byte[1024];
                     byte[] writeBlock;
                     int count = 0, size = 0;
-                    using (FileStream writeStream = File.Create(fileDir + fileName))
+                    using (FileStream writeStream = File.Create(@"E://" + fileName))
                     {
                         while (count < fs.Length - 4 - Length)
                         {
@@ -177,17 +177,20 @@ namespace Cry_AES_File.PublicCry
 
         public int EncryptFile(string filePath, RSAParameters parameters)
         {
-
+            return 0;
         }
 
-        public int EncryptFile(string filePath, RSAParameters parameters)
+        public int DecryptFile(string filePath, RSAParameters parameters)
         {
-
+            return 0;
         }
 
         public int SetKeySize(int size)
         {
+            this.RsaSize = size;
+            rsa = new RSACryptoServiceProvider(size);
 
+            return 0;
         }
     }
 }
