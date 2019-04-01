@@ -9,7 +9,8 @@ namespace SEDemo.Models
 {
     class FileInfo
     {
-        public int FileInfoId { set; get; }
+        [Key]
+        public string FileInfoId { set; get; }
 
         [StringLength(50)]
         public string FileName { set; get; }

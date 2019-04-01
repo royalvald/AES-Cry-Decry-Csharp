@@ -10,9 +10,10 @@ namespace SEDemo.Models
 {
     class Token
     {
-        public int TokenId { set; get; }
+        [Key]
+        public string TokenId { set; get; }
         
-        [StringLength(50)]
-        public string TokenString { set; get; }
+       // [StringLength(50)]
+       // public string TokenString { set; get; }
     }
 }

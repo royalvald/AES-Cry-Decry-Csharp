@@ -10,7 +10,7 @@ namespace SEDemo.Models
 {
     class SEContext:DbContext
     {
-        public SEContext() : base("name=SEContex") { }
+        public SEContext() : base("name=SEContext") { }
 
         public DbSet<FileInfo> FileInfo { set; get; }
 

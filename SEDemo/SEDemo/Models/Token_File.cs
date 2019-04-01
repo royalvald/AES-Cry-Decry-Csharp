@@ -12,8 +12,9 @@ namespace SEDemo.Models
         [Key]
         public int Token_FileId { set; get; }
 
-        public int TokenId { set; get; }
+        [StringLength(50)]
+        public string TokenId { set; get; }
 
-        public string FileIdList { set; get; }
+        public string FileId { set; get; }
     }
 }

@@ -15,7 +15,7 @@ namespace SEDemo.Interface
 
         public void test()
         {
-            Context.FileInfo.s
+            
         }
         //Token表的增删查改
         public int toeknSearch()

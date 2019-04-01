@@ -51,6 +51,7 @@
   </ItemGroup>
   <ItemGroup>
     <Compile Include="Interface\DbConnect.cs" />
+    <Compile Include="Models\AfterSearch.cs" />
     <Compile Include="Models\FileInfo.cs" />
     <Compile Include="Models\FileToken.cs" />
     <Compile Include="Models\SEContext.cs" />
@@ -58,11 +59,11 @@
     <Compile Include="Models\Token_File.cs" />
     <Compile Include="Program.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
+    <Compile Include="Service.cs" />
   </ItemGroup>
   <ItemGroup>
     <None Include="App.config" />
     <None Include="packages.config" />
   </ItemGroup>
-  <ItemGroup />
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
 </Project>
