@@ -46,6 +46,13 @@ namespace SEDemo.Models
             return 0;
         }
 
+        //返回指定token下搜索记录
+        public int GetTokenHistory(string token,List<string> list)
+        {
+            list = GetTokenHistory(token);
+            if (list != null) return 0; 
+            else return -1;
+        }
 
         public List<string> GetTokenHistory(string token)
         {
