@@ -22,6 +22,18 @@ namespace SEDemo.Save
         int SaveFile(string filePath);
 
         //接下来需要根据文件版本控制提供相应接口
+        /// <summary>
+        /// 生成版本信息
+        /// </summary>
+        /// <param name="filePath">传入文件xml记录</param>
+        /// <returns>返回文件版本（xml记录）地址/识别码</returns>
         string CreatRecord(string filePath);
+
+        /// <summary>
+        /// 回溯版本
+        /// </summary>
+        /// <param name="filePath">传入文件识别码</param>
+        /// <returns>返回识别码</returns>
+        string GetRecord(string filePath);
     }
 }
