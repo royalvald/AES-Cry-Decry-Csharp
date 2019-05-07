@@ -65,13 +65,12 @@
     <Compile Include="Properties\AssemblyInfo.cs" />
     <Compile Include="Search\Service.cs" />
     <Compile Include="SE\Interface\ISE.cs" />
+    <Compile Include="SE\Method\SEFun.cs" />
   </ItemGroup>
   <ItemGroup>
     <None Include="App.config" />
     <None Include="packages.config" />
   </ItemGroup>
-  <ItemGroup>
-    <Folder Include="SE\Method\" />
-  </ItemGroup>
+  <ItemGroup />
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
 </Project>

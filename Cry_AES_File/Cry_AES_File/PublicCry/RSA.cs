@@ -5,10 +5,11 @@ using System.Text;
 using System.Threading.Tasks;
 using System.Security.Cryptography;
 using System.IO;
+using System.Runtime.Serialization.Formatters.Binary;
 
 namespace Cry_AES_File.PublicCry
 {
-    class RSA
+    public class RSA
     {
         private int RsaSize = 0;
         private int DecryptionSize = 0;
@@ -29,6 +30,26 @@ namespace Cry_AES_File.PublicCry
             this.EncryptionSize = keySize / 8 - 11;
         }
 
+        public byte[] GetPublicKey()
+        {
+            BinaryFormatter formatter = new BinaryFormatter();
+            MemoryStream stream = new MemoryStream();
+            formatter.Serialize(stream, this.PublicKey);
+            byte[] objectBytes = new byte[stream.Length];
+            stream.Read(objectBytes, 0, (int)stream.Length);
+            stream.Close();
+
+            return objectBytes;
+        }
+
+        public byte[] GetSecrectKey()
+        {
+            BinaryFormatter formatter = new BinaryFormatter();
+            MemoryStream stream = new MemoryStream();
+            formatter.Serialize(stream, this.SecrectKey);
+            byte[] objectBytes = new byte[stream.Length];
+            stream.Read(objectBytes,0,)
+        }
 
         public byte[] EncryptInfo(string Info)
         {
@@ -47,6 +68,13 @@ namespace Cry_AES_File.PublicCry
             return Info;
         }
 
+        /// <summary>
+        /// 加密信息
+        /// </summary>
+        /// <param name="Info"></param>
+        /// <param name="parameters"></param>
+        /// <param name="fOAEP"></param>
+        /// <returns></returns>
         public byte[] EncryptInfo(string Info, RSAParameters parameters, bool fOAEP)
         {
             byte[] EncryptBlock = null;
@@ -62,6 +90,13 @@ namespace Cry_AES_File.PublicCry
             return EncryptBlock;
         }
 
+        /// <summary>
+        /// 解密信息
+        /// </summary>
+        /// <param name="EncrypyBlock"></param>
+        /// <param name="parameters"></param>
+        /// <param name="fOAEP"></param>
+        /// <returns></returns>
         public string DecryptInfo(byte[] EncrypyBlock, RSAParameters parameters, bool fOAEP)
         {
             string Info = null;
