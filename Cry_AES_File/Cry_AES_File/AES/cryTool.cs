@@ -12,7 +12,7 @@ namespace Cry_AES_File.Utils
     {
         public enum Cry_KeySize { Key_128, Key_192, Key_256 };
 
-        static AesManaged managed = new AesManaged();
+        private AesManaged managed = new AesManaged();
 
         public cryTool(Cry_KeySize keySize)
         {
@@ -58,7 +58,7 @@ namespace Cry_AES_File.Utils
         /// 返回初始向量
         /// </summary>
         /// <returns></returns>
-        public byte[] GenerateIV()
+        private byte[] GenerateIV()
         {
             return managed.IV;
         }
@@ -108,52 +108,32 @@ namespace Cry_AES_File.Utils
                 string Encry_File_Name = fileName.Substring(0, fileName.LastIndexOf(".")) + ".dat";
                 string Encry_Full_Name = fileDir + Encry_File_Name;
 
-                FileStream fs = File.Open(filePath, FileMode.Open);
+                FileStream fs = File.Open(filePath, FileMode.Open);             
 
-                /* if (fs.Length < 1024 * 1024)
-                 {
-                     using (FileStream writeStream = File.Create(Encry_Full_Name))
-                     {
-                         using (CryptoStream crypto = new CryptoStream(writeStream, managed.CreateEncryptor(), CryptoStreamMode.Write))
-                         {
-                             byte[] NameBlock = Encoding.UTF8.GetBytes(fileName);
-                             byte[] InfoBlock = new byte[fs.Length + NameBlock.Length + 4];
-                             byte[] NameCount = BitConverter.GetBytes(NameBlock.Length);
-
-                             Array.Copy(NameCount, 0, InfoBlock, 0, 4);
-                             Array.Copy(NameBlock, 0, InfoBlock, 4, NameBlock.Length);
-
-                             fs.Read(InfoBlock, NameBlock.Length, (int)fs.Length);
-                             crypto.Write(InfoBlock, 0, InfoBlock.Length);
-                         }
-                     }
-                 }
-                 else*/
+                //文件较大只能进行循环读取
+                using (FileStream writeStream = File.Create(Encry_Full_Name))
                 {
-                    //文件较大只能进行循环读取
-                    using (FileStream writeStream = File.Create(Encry_Full_Name))
+                    using (CryptoStream crypto = new CryptoStream(writeStream, managed.CreateEncryptor(), CryptoStreamMode.Write))
                     {
-                        using (CryptoStream crypto = new CryptoStream(writeStream, managed.CreateEncryptor(), CryptoStreamMode.Write))
+                        byte[] NameBlock = Encoding.UTF8.GetBytes(fileName);
+                        byte[] InfoBlcok = new byte[1024];
+                        byte[] NameCount = BitConverter.GetBytes(NameBlock.Length);
+
+                        writeStream.Write(this.managed.IV, 0, this.managed.IV.Length);
+
+                        crypto.Write(NameCount, 0, NameCount.Length);
+                        crypto.Write(NameBlock, 0, NameBlock.Length);
+
+                        int count = 0, size = 0;
+
+                        while (count < fs.Length)
                         {
-                            byte[] NameBlock = Encoding.UTF8.GetBytes(fileName);
-                            byte[] InfoBlcok = new byte[1024];
-                            byte[] NameCount = BitConverter.GetBytes(NameBlock.Length);
-
-                            crypto.Write(NameCount, 0, NameCount.Length);
-                            crypto.Write(NameBlock, 0, NameBlock.Length);
-
-                            int count = 0, size = 0;
-
-                            while (count < fs.Length)
-                            {
-                                size = fs.Read(InfoBlcok, 0, 1024);
-                                crypto.Write(InfoBlcok, 0, size);
-                                count += size;
-                            }
+                            size = fs.Read(InfoBlcok, 0, 1024);
+                            crypto.Write(InfoBlcok, 0, size);
+                            count += size;
                         }
                     }
                 }
-
                 fs.Close();
                 return 0;
             }
@@ -184,7 +164,7 @@ namespace Cry_AES_File.Utils
                         string fileName = Encoding.UTF8.GetString(NameBlock);
 
                         byte[] infoBytes = new byte[1024];
-                        using (FileStream writeStream = File.Create(@"E://"+ fileName))
+                        using (FileStream writeStream = File.Create(@"E://" + fileName))
                         {
                             int count = 4 + NameLength, size = 0;
                             int FileLength = (int)fs.Length;
@@ -212,9 +192,9 @@ namespace Cry_AES_File.Utils
         /// <param name="key"></param>
         /// <param name="IV"></param>
         /// <returns></returns>
-        public int EncryFile(string filePath,byte[] key,byte[] IV)
+        public int EncryFile(string filePath, byte[] key, byte[] IV)
         {
-            if(File.Exists(filePath))
+            if (File.Exists(filePath))
             {
                 managed.Key = key;
                 managed.IV = IV;
@@ -234,9 +214,9 @@ namespace Cry_AES_File.Utils
         /// <param name="key"></param>
         /// <param name="IV"></param>
         /// <returns></returns>
-        public int DecryFile(string filePath,byte[] key,byte[] IV)
+        public int DecryFile(string filePath, byte[] key, byte[] IV)
         {
-            if(File.Exists(filePath))
+            if (File.Exists(filePath))
             {
                 managed.Key = key;
                 managed.IV = IV;
@@ -256,7 +236,7 @@ namespace Cry_AES_File.Utils
         /// <param name="sym"></param>
         /// <param name="info"></param>
         /// <returns></returns>
-        public static byte[] AESEncryption(SymmetricAlgorithm sym, byte[] info)
+        public  byte[] AESEncryption(SymmetricAlgorithm sym, byte[] info)
         {
             ICryptoTransform crypto = sym.CreateEncryptor(managed.Key, managed.IV);
             byte[] block = crypto.TransformFinalBlock(info, 0, info.Length);
@@ -270,7 +250,7 @@ namespace Cry_AES_File.Utils
         /// <param name="sym"></param>
         /// <param name="info"></param>
         /// <returns></returns>
-        public static byte[] AESDecryption(SymmetricAlgorithm sym, byte[] info)
+        public  byte[] AESDecryption(SymmetricAlgorithm sym, byte[] info)
         {
             ICryptoTransform crypto = sym.CreateDecryptor(managed.Key, managed.IV);
             byte[] block = crypto.TransformFinalBlock(info, 0, info.Length);
