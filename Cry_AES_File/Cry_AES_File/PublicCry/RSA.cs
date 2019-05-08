@@ -15,12 +15,28 @@ namespace Cry_AES_File.PublicCry
         private int DecryptionSize = 0;
         private int EncryptionSize = 0;
 
+        public int KeySizes
+        {
+            set
+            {
+                if (value < 512) this.RsaSize = 512;
+                else if (value > 16384) this.RsaSize = 16384;
+                else this.RsaSize = value;
+            }
+            get
+            {
+                return this.RsaSize;
+            }
+        }
+
         public RSAParameters PublicKey { private set; get; }
         private RSAParameters SecrectKey { set; get; }
 
         RSACryptoServiceProvider rsa;
-        public RSA(int keySize = 400)
+        public RSA(int keySize = 512)
         {
+            if (keySize > 16384) keySize = 16384;
+            else if (keySize < 512) keySize = 512;           
 
             rsa = new RSACryptoServiceProvider(keySize);
             this.RsaSize = keySize;
@@ -29,6 +45,7 @@ namespace Cry_AES_File.PublicCry
             this.DecryptionSize = keySize / 8;
             this.EncryptionSize = keySize / 8 - 11;
         }
+
 
         public byte[] GetPublicKey()
         {
@@ -48,7 +65,19 @@ namespace Cry_AES_File.PublicCry
             MemoryStream stream = new MemoryStream();
             formatter.Serialize(stream, this.SecrectKey);
             byte[] objectBytes = new byte[stream.Length];
-            stream.Read(objectBytes,0,)
+            stream.Read(objectBytes, 0, (int)stream.Length);
+
+            return objectBytes;
+        }
+
+        public int reGnenerate(int keySize)
+        {
+            if (keySize > 16384) keySize = 16384;
+            else if (keySize < 512) keySize = 512;
+
+            this.rsa = new RSACryptoServiceProvider(keySize);
+
+            return 0;
         }
 
         public byte[] EncryptInfo(string Info)

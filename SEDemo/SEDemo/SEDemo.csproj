@@ -66,6 +66,7 @@
     <Compile Include="Search\Service.cs" />
     <Compile Include="SE\Interface\ISE.cs" />
     <Compile Include="SE\Method\SEFun.cs" />
+    <Compile Include="SE\Method\tool.cs" />
   </ItemGroup>
   <ItemGroup>
     <None Include="App.config" />
