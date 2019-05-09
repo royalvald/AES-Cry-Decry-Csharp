@@ -11,17 +11,17 @@ namespace Cry_AES_File
     {
         public static void Main(string[] args)
         {
-            //string s1 = "hello world";
-            //string s2 = "bye bye";
-            //byte[] key = Encoding.UTF8.GetBytes(s2);
-            //byte[] info = Encoding.UTF8.GetBytes(s1);
-            //byte[] signInfo = HmacHash.Sign(key, info);
+            string s1 = "hello world";
+            string s2 = "bye bye";
+            byte[] key = Encoding.UTF8.GetBytes(s2);
+            byte[] info = Encoding.UTF8.GetBytes(s1);
+            byte[] signInfo = HmacHash.Sign(key, info);
             //Console.WriteLine(HmacHash.Verify(key, info, signInfo));
             //HmacHash hmac = new HmacHash();
             //Console.WriteLine(hmac.GetHashSize()/8);
-            string s1 = @"F:\test\code\test";
-            Directory.CreateDirectory(s1);
-            Console.WriteLine(Directory.Exists(s1));
+            //string s1 = @"F:\test\code\test";
+           //Directory.CreateDirectory(s1);
+            Console.WriteLine(signInfo.Length);
         }
     }
 }

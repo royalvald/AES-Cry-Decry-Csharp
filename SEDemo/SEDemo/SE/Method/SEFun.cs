@@ -7,8 +7,10 @@ using System.Threading.Tasks;
 using Cry_AES_File;
 using Cry_AES_File.Utils;
 using Cry_AES_File.PublicCry;
+
 #endregion
 using System.Security.Cryptography;
+using SEDemo.SE.Method.PackClass;
 
 namespace SEDemo.SE.Method
 {
@@ -23,7 +25,11 @@ namespace SEDemo.SE.Method
         public byte[] k2;
         //对称加密的随机向量
         public byte[] k3;
-
+        //哈希表
+        Dictionary<string, List<string>> rw;
+        Dictionary<string, List<string>> rf;
+        //搜索历史集合
+        List<string> history;
         //密钥生成
         public int GenKey(KeySize size)
         {
@@ -62,6 +68,12 @@ namespace SEDemo.SE.Method
             cryTool tool = new cryTool(symmetry);
             k2 = tool.GenerateKey();
             k3 = tool.GenerateIV();
+
+            //初始化
+            history = new List<string>();
+
+            rw = new Dictionary<string, List<string>>();
+            rf = new Dictionary<string, List<string>>();
             return 0;
         }
 
@@ -76,7 +88,7 @@ namespace SEDemo.SE.Method
         }
 
         //文件解密
-        public int DecryptionFile(string filePath,string DesFilePath)
+        public int DecryptionFile(string filePath, string DesFilePath)
         {
             cryTool tool = new cryTool(symmetry);
             tool.SetKey(k2);
@@ -90,11 +102,46 @@ namespace SEDemo.SE.Method
         public string SearchToken(string word)
         {
             byte[] wordArray = Encoding.UTF8.GetBytes(word);
-            byte[] tokenArray= HmacHash.Sign(k1, wordArray);
+            byte[] tokenArray = HmacHash.Sign(k1, wordArray);
 
             string token = tool.ByteToHex(tokenArray);
+            history.Add(token);
 
             return token;
         }
+
+        //Search过程
+        public List<string> Search(string token)
+        {
+            if (rw.ContainsKey(token)) return rw[token];
+            List<string> searchList = null;
+            searchList = new List<string>();
+            foreach (var item in rf.Keys)
+            {
+                foreach (var tip in rf[item])
+                {
+
+                }
+            }
+            return searchList;
+        }
+
+        //添加Token
+        public string AddToken(List<string> keyWords,string fileID)
+        {
+            return " ";
+        }
+
+
+        public string AddFile(PackFileInfo info,string filePath)
+        {
+            return " ";
+        }
+
+        public bool DeleteFile(string fileId)
+        {
+            return true;
+        }
+
     }
 }

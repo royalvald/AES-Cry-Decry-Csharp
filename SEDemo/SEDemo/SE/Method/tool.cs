@@ -33,5 +33,11 @@ namespace SEDemo.SE.Method
 
             return infoByte;
         }
+
+        //HMAC数据映射检查
+        public bool HmacCheck(string s1)
+        {
+            return true;
+        }
     }
 }

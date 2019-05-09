@@ -4,10 +4,10 @@ D:\Code\C#\加密模块\AES-Encry-Decry-Csharp\Cry_AES_File\Cry_AES_File\obj\Deb
 D:\Code\C#\加密模块\AES-Encry-Decry-Csharp\Cry_AES_File\Cry_AES_File\bin\Debug\Cry_AES_File.exe.config
 D:\Code\C#\加密模块\AES-Encry-Decry-Csharp\Cry_AES_File\Cry_AES_File\bin\Debug\Cry_AES_File.exe
 D:\Code\C#\加密模块\AES-Encry-Decry-Csharp\Cry_AES_File\Cry_AES_File\obj\Debug\Cry_AES_File.exe
-F:\code\C#\Cry_File\AES-Encry-Decry-Csharp\Cry_AES_File\Cry_AES_File\bin\Debug\Cry_AES_File.dll.config
-F:\code\C#\Cry_File\AES-Encry-Decry-Csharp\Cry_AES_File\Cry_AES_File\bin\Debug\Cry_AES_File.dll
 F:\code\C#\Cry_File\AES-Encry-Decry-Csharp\Cry_AES_File\Cry_AES_File\bin\Debug\Cry_AES_File.pdb
 F:\code\C#\Cry_File\AES-Encry-Decry-Csharp\Cry_AES_File\Cry_AES_File\obj\Debug\Cry_File_Info.csprojAssemblyReference.cache
 F:\code\C#\Cry_File\AES-Encry-Decry-Csharp\Cry_AES_File\Cry_AES_File\obj\Debug\Cry_File_Info.csproj.CoreCompileInputs.cache
-F:\code\C#\Cry_File\AES-Encry-Decry-Csharp\Cry_AES_File\Cry_AES_File\obj\Debug\Cry_AES_File.dll
 F:\code\C#\Cry_File\AES-Encry-Decry-Csharp\Cry_AES_File\Cry_AES_File\obj\Debug\Cry_AES_File.pdb
+F:\code\C#\Cry_File\AES-Encry-Decry-Csharp\Cry_AES_File\Cry_AES_File\bin\Debug\Cry_AES_File.exe.config
+F:\code\C#\Cry_File\AES-Encry-Decry-Csharp\Cry_AES_File\Cry_AES_File\bin\Debug\Cry_AES_File.exe
+F:\code\C#\Cry_File\AES-Encry-Decry-Csharp\Cry_AES_File\Cry_AES_File\obj\Debug\Cry_AES_File.exe
