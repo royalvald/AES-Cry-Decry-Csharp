@@ -35,9 +35,44 @@ namespace SEDemo.SE.Method
         }
 
         //HMAC数据映射检查
-        public bool HmacCheck(string s1)
+        public static bool HmacCheck(string s1)
         {
             return true;
+        }
+
+        /// <summary>
+        /// 字符串映射为强随机值
+        /// </summary>
+        /// <param name="s"></param>
+        /// <returns></returns>
+        public static byte[] WordToHash(string s)
+        {
+            byte[] temp = null;
+            return temp;
+        }
+
+        public static string HmacHash(string s)
+        {
+            return " ";
+        }
+        public static string HmacHash(byte[] s)
+        {
+            return " ";
+        }
+
+        public static string HmacAdd(string s)
+        {
+            return " ";
+        }
+
+        public static int FileAdd(string filePath)
+        {
+            return 1;
+        }
+
+        public static int RemoveFile(string fileId)
+        {
+            return 1;
         }
     }
 }

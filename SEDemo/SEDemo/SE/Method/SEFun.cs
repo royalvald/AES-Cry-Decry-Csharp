@@ -7,10 +7,11 @@ using System.Threading.Tasks;
 using Cry_AES_File;
 using Cry_AES_File.Utils;
 using Cry_AES_File.PublicCry;
-
+using SEDemo.SE.Method;
+using SEDemo.SE.Method.PackClass;
 #endregion
 using System.Security.Cryptography;
-using SEDemo.SE.Method.PackClass;
+
 
 namespace SEDemo.SE.Method
 {
@@ -120,26 +121,63 @@ namespace SEDemo.SE.Method
             {
                 foreach (var tip in rf[item])
                 {
-
+                    if (tool.HmacCheck(tip))
+                    {
+                        searchList.Add(tip);
+                    }
                 }
             }
             return searchList;
         }
 
         //添加Token
-        public string AddToken(List<string> keyWords,string fileID)
+        public PackFileInfo AddToken(List<string> keyWords, string fileID)
         {
-            return " ";
+            List<byte[]> random = new List<byte[]>();
+            byte[] temp = null;
+            List<string> C = new List<string>();
+            List<string> searched = new List<string>();
+            foreach (var item in keyWords)
+            {
+                temp = tool.WordToHash(item);
+                random.Add(temp);
+                string s1 = tool.HmacHash(temp);
+                if (history.Contains(s1))
+                {
+                    searched.Add(s1);
+                }
+                C.Add(tool.HmacAdd(s1));
+            }
+            //sort比较器实现
+            C.Sort();
+            PackFileInfo info = new PackFileInfo();
+            info.FileID = fileID;
+            info.historyList = searched;
+            info.tokenList = C;         
+
+            return info;
         }
 
 
-        public string AddFile(PackFileInfo info,string filePath)
+        public int AddFile(PackFileInfo info, string filePath)
         {
-            return " ";
+            rf.Add(info.FileID, info.tokenList);
+            foreach (var item in info.historyList)
+            {
+                rw[item].Add(info.FileID);
+            }
+            tool.FileAdd(filePath);
+            return 1;
         }
 
         public bool DeleteFile(string fileId)
         {
+            foreach (string item in rw.Keys)
+            {
+                if (rw[item].Contains(fileId)) rw[item].Remove(fileId);
+            }
+            tool.RemoveFile(fileId);
+            if (rf.Keys.Contains<string>(fileId)) rf.Remove(fileId);
             return true;
         }
 

@@ -15,6 +15,7 @@ namespace SEDemo.SE.Method.PackClass
         public List<string> tokenList { set; get; }
 
         //已检索过的token
-        public List<string> historyList { set; get }
+        public List<string> historyList { set; get; }
+
     }
 }
