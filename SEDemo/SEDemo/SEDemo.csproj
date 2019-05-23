@@ -68,6 +68,7 @@
     <Compile Include="SE\Method\PackClass\PackFileInfo.cs" />
     <Compile Include="SE\Method\SEFun.cs" />
     <Compile Include="SE\Method\tool.cs" />
+    <Compile Include="test\TestCreat.cs" />
   </ItemGroup>
   <ItemGroup>
     <None Include="App.config" />

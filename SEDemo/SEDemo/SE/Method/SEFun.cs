@@ -141,7 +141,7 @@ namespace SEDemo.SE.Method
             {
                 temp = tool.WordToHash(item);
                 random.Add(temp);
-                string s1 = tool.HmacHash(temp);
+                string s1 = tool.HmacHash(temp,k1);
                 if (history.Contains(s1))
                 {
                     searched.Add(s1);

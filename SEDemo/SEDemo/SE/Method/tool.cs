@@ -3,6 +3,10 @@ using System.Collections.Generic;
 using System.IO;
 using System.Linq;
 using System.Text;
+#region
+using Cry_AES_File.Utils;
+using Cry_AES_File.PublicCry;
+#endregion
 
 namespace SEDemo.SE.Method
 {
@@ -34,7 +38,7 @@ namespace SEDemo.SE.Method
             return infoByte;
         }
 
-        //HMAC数据映射检查
+        //HMAC数据映射检查格式为“H(s)||s”
         public static bool HmacCheck(string s1)
         {
             return true;
@@ -47,29 +51,63 @@ namespace SEDemo.SE.Method
         /// <returns></returns>
         public static byte[] WordToHash(string s)
         {
-            byte[] temp = null;
+            byte[] temp = new byte[64];
+            
             return temp;
         }
 
-        public static string HmacHash(string s)
+        /// <summary>
+        /// 
+        /// </summary>
+        /// <param name="s"></param>
+        /// <param name="key"></param>
+        /// <returns></returns>
+        public static string HmacHash(string s,byte[] key)
         {
-            return " ";
-        }
-        public static string HmacHash(byte[] s)
-        {
+            byte[] stringBytes = Encoding.UTF8.GetBytes(s);
+            HmacHash(stringBytes, key);
+                
             return " ";
         }
 
+        /// <summary>
+        /// token生成
+        /// </summary>
+        /// <param name="s"></param>
+        /// <param name="key"></param>
+        /// <returns></returns>
+        public static string HmacHash(byte[] s,byte[] key)
+        {
+            byte[] temp= Cry_AES_File.HmacHash.Sign(key, s);
+            return ByteToHex(temp);
+        }
+
+        /// <summary>
+        /// 将s映射为H(s)，输出H(s)||s
+        /// </summary>
+        /// <param name="s"></param>
+        /// <returns></returns>
         public static string HmacAdd(string s)
         {
+           
             return " ";
         }
 
+        /// <summary>
+        /// 根据文件路径添加文件到系统
+        /// </summary>
+        /// <param name="filePath"></param>
+        /// <returns></returns>
         public static int FileAdd(string filePath)
         {
             return 1;
         }
 
+        /// <summary>
+        /// 根据文件ID删除文件
+        /// </summary>
+        /// <param name="fileId"></param>
+        /// <returns></returns>
         public static int RemoveFile(string fileId)
         {
             return 1;
