@@ -13,7 +13,7 @@ namespace SEDemo
     {
         static void Main(string[] args)
         {
-            
+            TestCreat.WordListCreat(10000);
         }
     }
 }
