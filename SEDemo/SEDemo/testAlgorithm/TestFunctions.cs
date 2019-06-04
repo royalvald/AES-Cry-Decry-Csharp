@@ -113,7 +113,7 @@ namespace SEDemo.testAlgorithm
             return list;
         }
 
-        public int noEncryFind(string filePath)
+        public static int noEncryFind(string filePath)
         {
             if(File.Exists(filePath))
             {
@@ -138,8 +138,14 @@ namespace SEDemo.testAlgorithm
             byte[] key = tool.WordToHash();
             if(File.Exists(filePath))
             {
+                System.Diagnostics.Stopwatch stopwatch = new System.Diagnostics.Stopwatch();
+                stopwatch.Start();
                 Dictionary<int, List<saveInfo>> dic = basicEncry(filePath,key);
                 List<string> list = searchFile(filePath);
+                stopwatch.Stop();
+                TimeSpan time = stopwatch.Elapsed;
+                Console.WriteLine(time.TotalSeconds);
+                int count = 0;
                 foreach (var item in list)
                 {
                     foreach (var items in dic)
@@ -147,6 +153,7 @@ namespace SEDemo.testAlgorithm
                         foreach (var element in items.Value)
                         {
                             if (BytesCompare(element.result, tool.HmacHashByte(element.random, key))) continue;
+                           // Console.Write(count++);
                         }
                     }
                 }
