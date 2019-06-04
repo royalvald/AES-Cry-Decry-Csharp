@@ -139,7 +139,7 @@ namespace SEDemo.SE.Method
             List<string> searched = new List<string>();
             foreach (var item in keyWords)
             {
-                temp = tool.WordToHash(item);
+                //temp = tool.WordToHash(item);
                 random.Add(temp);
                 string s1 = tool.HmacHash(temp,k1);
                 if (history.Contains(s1))

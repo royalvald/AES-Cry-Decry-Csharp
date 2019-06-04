@@ -8,7 +8,12 @@ namespace SEDemo.testAlgorithm
 {
     class saveInfo
     {
-        public string random { set; get; }
-        public string result { set; get; }
+        public byte[] random { set; get; }
+        public byte[] result { set; get; }
+        public saveInfo(byte[] random,byte[] result)
+        {
+            this.random = random;
+            this.result = result;
+        }
     }
 }

@@ -9,6 +9,12 @@ namespace Cry_AES_File
 {
     public class HmacHash
     {
+        /// <summary>
+        /// 给定密钥下，对指定数据进行hamc映射
+        /// </summary>
+        /// <param name="key"></param>
+        /// <param name="info"></param>
+        /// <returns></returns>
         public static byte[] Sign(byte[] key, byte[] info)
         {
             HMAC hmac = new HMACSHA512(key);
@@ -16,6 +22,13 @@ namespace Cry_AES_File
             return hmac.ComputeHash(info, 0, info.Length);
         }
 
+        /// <summary>
+        /// 给定数据确认验证信息是否是数据的映射
+        /// </summary>
+        /// <param name="key"></param>
+        /// <param name="info"></param>
+        /// <param name="hash"></param>
+        /// <returns></returns>
         public static bool Verify(byte[] key, byte[] info, byte[] hash)
         {
             HMAC hmac = new HMACSHA512(key);

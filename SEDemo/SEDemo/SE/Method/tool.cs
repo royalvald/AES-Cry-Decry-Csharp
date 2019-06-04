@@ -3,6 +3,7 @@ using System.Collections.Generic;
 using System.IO;
 using System.Linq;
 using System.Text;
+using System.Security.Cryptography;
 #region
 using Cry_AES_File.Utils;
 using Cry_AES_File.PublicCry;
@@ -49,10 +50,11 @@ namespace SEDemo.SE.Method
         /// </summary>
         /// <param name="s"></param>
         /// <returns></returns>
-        public static byte[] WordToHash(string s)
+        public static byte[] WordToHash()
         {
             byte[] temp = new byte[64];
-            
+            RNGCryptoServiceProvider provider = new RNGCryptoServiceProvider();
+            provider.GetBytes(temp);
             return temp;
         }
 
@@ -80,6 +82,11 @@ namespace SEDemo.SE.Method
         {
             byte[] temp= Cry_AES_File.HmacHash.Sign(key, s);
             return ByteToHex(temp);
+        }
+
+        public static byte[] HmacHashByte(byte[] s,byte[] key)
+        {
+            return Cry_AES_File.HmacHash.Sign(key, s);
         }
 
         /// <summary>
