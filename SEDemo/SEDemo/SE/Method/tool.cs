@@ -88,7 +88,7 @@ namespace SEDemo.SE.Method
         {
             return Cry_AES_File.HmacHash.Sign(key, s);
         }
-
+        
         /// <summary>
         /// 将s映射为H(s)，输出H(s)||s
         /// </summary>

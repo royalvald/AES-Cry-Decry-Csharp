@@ -132,5 +132,33 @@ namespace SEDemo.testAlgorithm
             }
             return 1;
         }
+
+        public static int basicEncryFind(string filePath)
+        {
+            byte[] key = tool.WordToHash();
+            if(File.Exists(filePath))
+            {
+                Dictionary<int, List<saveInfo>> dic = basicEncry(filePath,key);
+                List<string> list = searchFile(filePath);
+                foreach (var item in list)
+                {
+                    foreach (var items in dic)
+                    {
+                        foreach (var element in items.Value)
+                        {
+                            if (BytesCompare(element.result, tool.HmacHashByte(element.random, key))) continue;
+                        }
+                    }
+                }
+            }
+            return 1;
+        }
+        public static bool BytesCompare(byte[]b1,byte[]b2)
+        {
+            if (b1.Length != b2.Length) return false;
+            for (int i = 0; i < b1.Length;i++)
+                if (b1[i] != b2[i]) return false;
+            return true;
+        }
     }
 }
