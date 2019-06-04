@@ -68,6 +68,7 @@
     <Compile Include="SE\Method\PackClass\PackFileInfo.cs" />
     <Compile Include="SE\Method\SEFun.cs" />
     <Compile Include="SE\Method\tool.cs" />
+    <Compile Include="testAlgorithm\saveInfo.cs" />
     <Compile Include="testAlgorithm\TestFunctions.cs" />
     <Compile Include="test\TestCreat.cs" />
   </ItemGroup>
