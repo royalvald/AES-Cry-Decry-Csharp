@@ -6,6 +6,7 @@ using System.Threading.Tasks;
 using System.IO;
 using SEDemo.Models;
 using SEDemo.test;
+using SEDemo.testAlgorithm;
 
 namespace SEDemo
 {
@@ -13,7 +14,8 @@ namespace SEDemo
     {
         static void Main(string[] args)
         {
-            TestCreat.WordListCreat(10000);
+            //TestCreat.WordListCreat(10000);
+            TestFunctions.noEncry(@"D:\test1.txt");
         }
     }
 }
