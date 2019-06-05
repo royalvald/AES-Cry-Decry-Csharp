@@ -19,8 +19,8 @@ namespace SEDemo
         {
             System.Diagnostics.Stopwatch stopwatch = new System.Diagnostics.Stopwatch();
             stopwatch.Start();
-            testAlgorithm.TestFunctions.basicEncryFind(@"D:\test1.txt");
-            //test.TestCreat.WordListCreat(1000);
+            testAlgorithm.TestFunctions.basicEncryFind(@"D:\test1.txt",5000);
+            //test.TestCreat.WordListCreat(10000);
             stopwatch.Stop();
             TimeSpan time = stopwatch.Elapsed;
             Console.WriteLine(time.TotalSeconds);

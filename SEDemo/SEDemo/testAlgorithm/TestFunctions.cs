@@ -86,7 +86,7 @@ namespace SEDemo.testAlgorithm
             return dic;
         }
 
-        public static List<string> searchFile(string filePath)
+        public static List<string> searchFile(string filePath,int count)
         {
             List<string> list = new List<string>();
             if(File.Exists(filePath))
@@ -104,6 +104,7 @@ namespace SEDemo.testAlgorithm
                                 for(int i=1;i<6;i++)
                                 {
                                     list.Add(args[i]);
+                                    if (list.Count == count) return list;
                                 }
                             }
                         }
@@ -113,12 +114,12 @@ namespace SEDemo.testAlgorithm
             return list;
         }
 
-        public static int noEncryFind(string filePath)
+        public static int noEncryFind(string filePath,int count)
         {
             if(File.Exists(filePath))
             {
                 Dictionary<string, List<string>> dic = noEncry(filePath);
-                List<string> list = searchFile(filePath);
+                List<string> list = searchFile(filePath,count);
                 foreach (var item in list)
                 {
                     foreach (var items in dic)
@@ -133,7 +134,7 @@ namespace SEDemo.testAlgorithm
             return 1;
         }
 
-        public static int basicEncryFind(string filePath)
+        public static int basicEncryFind(string filePath,int count1)
         {
             byte[] key = tool.WordToHash();
             if(File.Exists(filePath))
@@ -141,10 +142,11 @@ namespace SEDemo.testAlgorithm
                 System.Diagnostics.Stopwatch stopwatch = new System.Diagnostics.Stopwatch();
                 stopwatch.Start();
                 Dictionary<int, List<saveInfo>> dic = basicEncry(filePath,key);
-                List<string> list = searchFile(filePath);
+                List<string> list = searchFile(filePath,count1);
                 stopwatch.Stop();
                 TimeSpan time = stopwatch.Elapsed;
                 Console.WriteLine(time.TotalSeconds);
+                Console.WriteLine("查询关键词个数：" + list.Count);
                 int count = 0;
                 foreach (var item in list)
                 {
@@ -153,7 +155,8 @@ namespace SEDemo.testAlgorithm
                         foreach (var element in items.Value)
                         {
                             if (BytesCompare(element.result, tool.HmacHashByte(element.random, key))) continue;
-                           // Console.Write(count++);
+                            count++;
+                            if (count % 10000000 == 0) Console.WriteLine(count);
                         }
                     }
                 }
