@@ -17,13 +17,13 @@ namespace SEDemo.testAlgorithm
             Dictionary<string, List<string>> rf = new Dictionary<string, List<string>>();
             string s = null;
 
-            if(File.Exists(filePath))
+            if (File.Exists(filePath))
             {
                 using (FileStream stream = File.Open(filePath, FileMode.Open))
                 {
                     using (StreamReader sr = new StreamReader(stream))
                     {
-                        while((s=sr.ReadLine())!=null)
+                        while ((s = sr.ReadLine()) != null)
                         {
                             if (s != "" && s != " ")
                             {
@@ -50,13 +50,19 @@ namespace SEDemo.testAlgorithm
             return rf;
         }
 
-        public static Dictionary<int, List<saveInfo>> basicEncry(string filePath,byte[] key)
+        /// <summary>
+        /// 加密索引表建立
+        /// </summary>
+        /// <param name="filePath"></param>
+        /// <param name="key"></param>
+        /// <returns></returns>
+        public static Dictionary<int, List<saveInfo>> basicEncry(string filePath, byte[] key)
         {
             Dictionary<int, List<saveInfo>> dic = new Dictionary<int, List<saveInfo>>();
             if (File.Exists(filePath))
             {
-                
-                using (FileStream fs = File.Open(filePath, FileMode.Open)) 
+
+                using (FileStream fs = File.Open(filePath, FileMode.Open))
                 {
                     using (StreamReader sr = new StreamReader(fs))
                     {
@@ -67,7 +73,7 @@ namespace SEDemo.testAlgorithm
                             {
                                 string[] args = s.Split(' ');
                                 List<byte[]> list = new List<byte[]>();
-                                for(int i=1;i<6;i++)
+                                for (int i = 1; i < 6; i++)
                                 {
                                     list.Add(tool.WordToHash());
                                 }
@@ -86,22 +92,28 @@ namespace SEDemo.testAlgorithm
             return dic;
         }
 
-        public static List<string> searchFile(string filePath,int count)
+        /// <summary>
+        /// 查询关键字查询
+        /// </summary>
+        /// <param name="filePath"></param>
+        /// <param name="count"></param>
+        /// <returns></returns>
+        public static List<string> searchFile(string filePath, int count)
         {
             List<string> list = new List<string>();
-            if(File.Exists(filePath))
+            if (File.Exists(filePath))
             {
                 string s = null;
                 using (FileStream stream = File.Open(filePath, FileMode.Open))
                 {
                     using (StreamReader sr = new StreamReader(stream))
                     {
-                        while((s=sr.ReadLine())!=null)
+                        while ((s = sr.ReadLine()) != null)
                         {
-                            if(s!=""&&s!=" ")
+                            if (s != "" && s != " ")
                             {
                                 string[] args = s.Split(' ');
-                                for(int i=1;i<6;i++)
+                                for (int i = 1; i < 6; i++)
                                 {
                                     list.Add(args[i]);
                                     if (list.Count == count) return list;
@@ -114,12 +126,39 @@ namespace SEDemo.testAlgorithm
             return list;
         }
 
-        public static int noEncryFind(string filePath,int count)
+        //新方法的关键字查询生成
+        public static List<WordInfo> searchFileWithAc(string filePath, int count,byte[] key)
         {
-            if(File.Exists(filePath))
+            List<WordInfo> list = new List<WordInfo>();
+            if (File.Exists(filePath))
+            {
+                string s = null;
+                using (FileStream stream = File.Open(filePath, FileMode.Open))
+                {
+                    using (StreamReader sr = new StreamReader(stream))
+                    {
+                        while ((s = sr.ReadLine()) != null)
+                        {
+                            if (s != "" && s != " ")
+                            {
+                                string[] args = s.Split(' ');
+                                byte[] temp = tool.HmacHashByte(Encoding.UTF8.GetBytes(args[0]), key);
+                                for (int i = 1; i < 6; i++)
+                                    list.Add(new WordInfo(args[0], temp));
+                            }
+                        }
+                    }
+                }
+            }
+            return list;
+        }
+
+        public static int noEncryFind(string filePath, int count)
+        {
+            if (File.Exists(filePath))
             {
                 Dictionary<string, List<string>> dic = noEncry(filePath);
-                List<string> list = searchFile(filePath,count);
+                List<string> list = searchFile(filePath, count);
                 foreach (var item in list)
                 {
                     foreach (var items in dic)
@@ -134,15 +173,15 @@ namespace SEDemo.testAlgorithm
             return 1;
         }
 
-        public static int basicEncryFind(string filePath,int count1)
+        public static int basicEncryFind(string filePath, int count1)
         {
             byte[] key = tool.WordToHash();
-            if(File.Exists(filePath))
+            if (File.Exists(filePath))
             {
                 System.Diagnostics.Stopwatch stopwatch = new System.Diagnostics.Stopwatch();
                 stopwatch.Start();
-                Dictionary<int, List<saveInfo>> dic = basicEncry(filePath,key);
-                List<string> list = searchFile(filePath,count1);
+                Dictionary<int, List<saveInfo>> dic = basicEncry(filePath, key);
+                List<string> list = searchFile(filePath, count1);
                 stopwatch.Stop();
                 TimeSpan time = stopwatch.Elapsed;
                 Console.WriteLine(time.TotalSeconds);
@@ -205,6 +244,7 @@ namespace SEDemo.testAlgorithm
                     foreach (var s in inverted)
                     {
                         if (s == item) tag = true;
+                        else list.Add(item);
                     }
                     if (tag) continue;
                     foreach (var items in dic)
@@ -220,10 +260,88 @@ namespace SEDemo.testAlgorithm
             }
             return 1;
         }
-        public static bool BytesCompare(byte[]b1,byte[]b2)
+
+        /// <summary>
+        /// 累加值索引
+        /// </summary>
+        /// <param name="filePath"></param>
+        /// <param name="key"></param>
+        /// <returns></returns>
+        public static Dictionary<int, saveInfo> Acculumator(string filePath, byte[] key)
+        {
+            string s = null;
+            Dictionary<int, saveInfo> dic = new Dictionary<int, saveInfo>();
+            if (File.Exists(filePath))
+            {
+                using (FileStream stream = File.Open(filePath, FileMode.Open))
+                {
+                    using (StreamReader sr = new StreamReader(stream))
+                    {
+                        while ((s = sr.ReadLine()) != null)
+                        {
+                            if (s != "" && s != " ")
+                            {
+                                string[] args = s.Split(' ');
+                                byte[] IDBytes = Encoding.UTF8.GetBytes(args[0]);
+                                byte[] hashBytes = tool.HmacHashByte(IDBytes, key);
+                                saveInfo info = new saveInfo(IDBytes, hashBytes);
+                                dic.Add(int.Parse(args[0]), info);
+                            }
+                        }
+                    }
+                }
+            }
+            return dic;
+        }
+
+
+
+        public static void NewMethod(string filePath, int count)
+        {
+            byte[] key = tool.WordToHash();
+            if (File.Exists(filePath))
+            {
+                System.Diagnostics.Stopwatch stopwatch = new System.Diagnostics.Stopwatch();
+                stopwatch.Start();
+                var search = searchFileWithAc(filePath, count, key);
+                var acIndex = Acculumator(filePath, key);
+                var basicIndex = basicEncry(filePath, key);
+                stopwatch.Stop();
+                TimeSpan time = stopwatch.Elapsed;
+                Console.WriteLine(time.TotalSeconds);                              
+                List<string> list = new List<string>();
+                Console.WriteLine("查询关键词个数：" + search.Count);
+                bool tag = false;
+                int count1=0;
+                foreach (var item in search)
+                {
+                    tag = false;
+                    foreach (var a in list)
+                    {
+                        if (a == item.word) tag = true;
+                        else list.Add(item.word);
+                    }
+                    if (tag) continue;
+                    foreach (var b in acIndex)
+                    {
+                        if (BytesCompare(tool.HmacHashByte(b.Value.random, key), item.bytes))
+                        {
+                            foreach (var c in basicIndex[b.Key])
+                            {
+                                if (BytesCompare(c.result, tool.HmacHashByte(c.random, key))) continue;
+                                count1++;
+                                if(count1%10000==0)
+                                Console.WriteLine(count1);
+                            }
+                        }
+                    }
+                }
+            }
+        }
+        public static bool BytesCompare(byte[] b1, byte[] b2)
         {
             if (b1.Length != b2.Length) return false;
-            for (int i = 0; i < b1.Length;i++)
+            for (int i = 0; i < b1.Length; i++)
                 if (b1[i] != b2[i]) return false;
             return true;
         }
