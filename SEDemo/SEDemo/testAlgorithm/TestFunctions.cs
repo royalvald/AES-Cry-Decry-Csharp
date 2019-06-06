@@ -163,6 +163,63 @@ namespace SEDemo.testAlgorithm
             }
             return 1;
         }
+
+        public static int basicEncryFindWithInverted(string filePath, int count1)
+        {
+            byte[] key = tool.WordToHash();
+            if (File.Exists(filePath))
+            {
+                System.Diagnostics.Stopwatch stopwatch = new System.Diagnostics.Stopwatch();
+                stopwatch.Start();
+                Dictionary<int, List<saveInfo>> dic = basicEncry(filePath, key);
+                List<string> list = searchFile(filePath, count1);
+                stopwatch.Stop();
+                TimeSpan time = stopwatch.Elapsed;
+                Console.WriteLine(time.TotalSeconds);
+                Console.WriteLine("查询关键词个数：" + list.Count);
+                int count = 0;
+                List<string> inverted = new List<string>();
+                bool tag = false;
+                foreach (var item in list)
+                {
+                    tag = false;
+                    foreach (var s in inverted)
+                    {
+                        if (s == item) tag = true;
+                    }
+                    if (tag) continue;
+                    foreach (var items in dic)
+                    {
+                        foreach (var element in items.Value)
+                        {
+                            if (BytesCompare(element.result, tool.HmacHashByte(element.random, key))) continue;
+                            count++;
+                            if (count % 100000 == 0) Console.WriteLine(count);
+                        }
+                    }
+                }
+                //第二次执行
+                foreach (var item in list)
+                {
+                    tag = false;
+                    foreach (var s in inverted)
+                    {
+                        if (s == item) tag = true;
+                    }
+                    if (tag) continue;
+                    foreach (var items in dic)
+                    {
+                        foreach (var element in items.Value)
+                        {
+                            if (BytesCompare(element.result, tool.HmacHashByte(element.random, key))) continue;
+                            count++;
+                            if (count % 100000 == 0) Console.WriteLine(count);
+                        }
+                    }
+                }
+            }
+            return 1;
+        }
         public static bool BytesCompare(byte[]b1,byte[]b2)
         {
             if (b1.Length != b2.Length) return false;
