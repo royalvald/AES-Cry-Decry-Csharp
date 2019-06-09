@@ -146,7 +146,7 @@ namespace SEDemo.testAlgorithm
                                 string[] args = s.Split(' ');
                                 byte[] temp = tool.HmacHashByte(Encoding.UTF8.GetBytes(args[0]), key);
                                 for (int i = 1; i < 6; i++)
-                                    list.Add(new WordInfo(args[0], temp));
+                                    list.Add(new WordInfo(args[i], temp));
                                 if (list.Count == count) return list;
                             }
                         }
@@ -311,6 +311,7 @@ namespace SEDemo.testAlgorithm
                 System.Diagnostics.Stopwatch stopwatch = new System.Diagnostics.Stopwatch();
                 stopwatch.Start();
                 var search = searchFileWithAc(filePath, count, key);
+                Console.WriteLine(search.Distinct<WordInfo>().Count<WordInfo>());
                 var acIndex = Acculumator(filePath, key);
                 var basicIndex = basicEncry(filePath, key);
                 stopwatch.Stop();
@@ -319,27 +320,37 @@ namespace SEDemo.testAlgorithm
                 List<string> list = new List<string>();
                 Console.WriteLine("查询关键词个数：" + search.Count);
                 bool tag = false;
-                int count1 = 0;             
+                int count1 = 0;
+                int temp = 0;
                 foreach (var item in search)
                 {
+                    //Console.WriteLine(item.word);
                     tag = false;
                     foreach (var a in list)
                     {
                         if (a == item.word) tag = true;
-                        
+                        //Console.WriteLine(a);
                     }
-                    if (tag) continue;
+                    if (tag)
+                    {
+                        temp++;
+                        //Console.WriteLine("跳过" + temp + "次");
+                        continue;
+
+                    }
                     else list.Add(item.word);
                     foreach (var b in acIndex)
                     {
                         if (BytesCompare(tool.HmacHashByte(b.Value.random, key), item.bytes))
                         {
+                            //Console.WriteLine("进入子区间");
                             foreach (var c in basicIndex[b.Key])
                             {
-                                if (BytesCompare(c.result, tool.HmacHashByte(c.random, key))) continue;
+                                //Console.WriteLine("最后比对");
                                 count1++;
-                                //if (count1 % 10000 == 0)
-                                   // Console.WriteLine(count1);
+                                if (count1 % 10000 == 0)
+                                    Console.WriteLine(count1);
+                                if (BytesCompare(c.result, tool.HmacHashByte(c.random, key))) continue;                              
                             }
                         }
                     }
