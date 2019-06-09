@@ -147,6 +147,7 @@ namespace SEDemo.testAlgorithm
                                 byte[] temp = tool.HmacHashByte(Encoding.UTF8.GetBytes(args[0]), key);
                                 for (int i = 1; i < 6; i++)
                                     list.Add(new WordInfo(args[0], temp));
+                                if (list.Count == count) return list;
                             }
                         }
                     }
@@ -186,8 +187,8 @@ namespace SEDemo.testAlgorithm
                 List<string> list = searchFile(filePath, count1);
                 stopwatch.Stop();
                 TimeSpan time = stopwatch.Elapsed;
-                Console.WriteLine(time.TotalSeconds);
-                Console.WriteLine("查询关键词个数：" + list.Count);
+                //Console.WriteLine(time.TotalSeconds);
+                //Console.WriteLine("查询关键词个数：" + list.Count);
                 int count = 0;
                 foreach (var item in list)
                 {
@@ -197,7 +198,7 @@ namespace SEDemo.testAlgorithm
                         {
                             if (BytesCompare(element.result, tool.HmacHashByte(element.random, key))) continue;
                             count++;
-                            if (count % 10000000 == 0) Console.WriteLine(count);
+                            //if (count % 10000000 == 0) Console.WriteLine(count);
                         }
                     }
                 }
@@ -216,8 +217,8 @@ namespace SEDemo.testAlgorithm
                 List<string> list = searchFile(filePath, count1);
                 stopwatch.Stop();
                 TimeSpan time = stopwatch.Elapsed;
-                Console.WriteLine(time.TotalSeconds);
-                Console.WriteLine("查询关键词个数：" + list.Count);
+                //Console.WriteLine(time.TotalSeconds);
+                //Console.WriteLine("查询关键词个数：" + list.Count);
                 int count = 0;
                 List<string> inverted = new List<string>();
                 bool tag = false;
@@ -236,12 +237,12 @@ namespace SEDemo.testAlgorithm
                         {
                             if (BytesCompare(element.result, tool.HmacHashByte(element.random, key))) continue;
                             count++;
-                            if (count % 100000 == 0) Console.WriteLine(count);
+                           // if (count % 100000 == 0) Console.WriteLine(count);
                         }
                     }
                 }
                 //第二次执行
-                foreach (var item in list)
+                /*foreach (var item in list)
                 {
                     tag = false;
                     foreach (var s in inverted)
@@ -262,7 +263,7 @@ namespace SEDemo.testAlgorithm
                             if (count % 100000 == 0) Console.WriteLine(count);
                         }
                     }
-                }
+                }*/
             }
             return 1;
         }
@@ -318,16 +319,17 @@ namespace SEDemo.testAlgorithm
                 List<string> list = new List<string>();
                 Console.WriteLine("查询关键词个数：" + search.Count);
                 bool tag = false;
-                int count1 = 0;
+                int count1 = 0;             
                 foreach (var item in search)
                 {
                     tag = false;
                     foreach (var a in list)
                     {
                         if (a == item.word) tag = true;
-                        else list.Add(item.word);
+                        
                     }
                     if (tag) continue;
+                    else list.Add(item.word);
                     foreach (var b in acIndex)
                     {
                         if (BytesCompare(tool.HmacHashByte(b.Value.random, key), item.bytes))
@@ -336,12 +338,13 @@ namespace SEDemo.testAlgorithm
                             {
                                 if (BytesCompare(c.result, tool.HmacHashByte(c.random, key))) continue;
                                 count1++;
-                                if (count1 % 10000 == 03)
-                                    Console.WriteLine(count1);
+                                //if (count1 % 10000 == 0)
+                                   // Console.WriteLine(count1);
                             }
                         }
                     }
                 }
+                
             }
         }
         public static bool BytesCompare(byte[] b1, byte[] b2)
