@@ -11,6 +11,7 @@ namespace SEDemo.testAlgorithm
     class TestFunctions
     {
         delegate void Method(string filePath);
+
         //没有加密情况下的索引建立过程
         public static Dictionary<string, List<string>> noEncry(string filePath)
         {
@@ -31,6 +32,7 @@ namespace SEDemo.testAlgorithm
                                 List<string> list = new List<string>();
                                 for (int i = 1; i < 6; i++)
                                     list.Add(args[i]);
+                                //形式是文件ID-关键词List
                                 rf.Add(args[0], list);
                             }
                         }
@@ -126,8 +128,8 @@ namespace SEDemo.testAlgorithm
             return list;
         }
 
-        //新方法的关键字查询生成
-        public static List<WordInfo> searchFileWithAc(string filePath, int count,byte[] key)
+        //新方法关键字查询生成
+        public static List<WordInfo> searchFileWithAc(string filePath, int count, byte[] key)
         {
             List<WordInfo> list = new List<WordInfo>();
             if (File.Exists(filePath))
@@ -227,6 +229,7 @@ namespace SEDemo.testAlgorithm
                         if (s == item) tag = true;
                     }
                     if (tag) continue;
+                    else inverted.Add(item);
                     foreach (var items in dic)
                     {
                         foreach (var element in items.Value)
@@ -244,9 +247,12 @@ namespace SEDemo.testAlgorithm
                     foreach (var s in inverted)
                     {
                         if (s == item) tag = true;
-                        else list.Add(item);
                     }
-                    if (tag) continue;
+                    if (tag)
+                    {
+                        Console.WriteLine("checked");
+                        continue;
+                    }
                     foreach (var items in dic)
                     {
                         foreach (var element in items.Value)
@@ -308,11 +314,11 @@ namespace SEDemo.testAlgorithm
                 var basicIndex = basicEncry(filePath, key);
                 stopwatch.Stop();
                 TimeSpan time = stopwatch.Elapsed;
-                Console.WriteLine(time.TotalSeconds);                              
+                Console.WriteLine(time.TotalSeconds);
                 List<string> list = new List<string>();
                 Console.WriteLine("查询关键词个数：" + search.Count);
                 bool tag = false;
-                int count1=0;
+                int count1 = 0;
                 foreach (var item in search)
                 {
                     tag = false;
@@ -330,8 +336,8 @@ namespace SEDemo.testAlgorithm
                             {
                                 if (BytesCompare(c.result, tool.HmacHashByte(c.random, key))) continue;
                                 count1++;
-                                if(count1%10000==0)
-                                Console.WriteLine(count1);
+                                if (count1 % 10000 == 03)
+                                    Console.WriteLine(count1);
                             }
                         }
                     }

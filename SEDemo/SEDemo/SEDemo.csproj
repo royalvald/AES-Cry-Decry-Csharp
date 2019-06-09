@@ -69,6 +69,7 @@
     <Compile Include="SE\Method\SEFun.cs" />
     <Compile Include="SE\Method\tool.cs" />
     <Compile Include="testAlgorithm\saveInfo.cs" />
+    <Compile Include="testAlgorithm\Test.cs" />
     <Compile Include="testAlgorithm\TestFunctions.cs" />
     <Compile Include="testAlgorithm\WordInfo.cs" />
     <Compile Include="test\TestCreat.cs" />
