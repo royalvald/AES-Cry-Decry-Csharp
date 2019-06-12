@@ -9,7 +9,7 @@ namespace SEDemo.test
 {
     class TestCreat
     {
-        public static int WordListCreat(int num)
+        public static int WordListCreat(int num,int tags,string filePath)
         {
             char[] testCharArray = {'a','b', 'c' , 'd' , 'e' , 'f' , 'g' , 'h' , 'i' , 'j' , 'k' ,
             'l','m','n','o','p','q','r','s','t','u','v','w','x','y','z','A','B','C','D','E',
@@ -27,7 +27,7 @@ namespace SEDemo.test
             //生成字符
             for (int i = 0; i < sum; i++)
                 numList.Add(random.Next(1, 53));
-            using (FileStream stream = File.Create(@"D:\test.txt"))
+            using (FileStream stream = File.Create(@"D:\test"+tags+".txt"))
             {
                 using (StreamWriter sw = new StreamWriter(stream))
                 {
@@ -39,7 +39,7 @@ namespace SEDemo.test
             }
             int count = 0;
             int tag = 0;
-            using (StreamWriter sw = new StreamWriter(File.Create(@"D:\test1.txt")))
+            using (StreamWriter sw = new StreamWriter(File.Create(filePath)))
             {
 
                 foreach (var item in list)
