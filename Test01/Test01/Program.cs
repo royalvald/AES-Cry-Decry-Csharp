@@ -31,7 +31,7 @@ namespace Test01
             
             
             bool tag;
-            for (int i = 0; i < 100000; i++)
+            for (int i = 0; i < 1000; i++)
             {
                  tag = Accumulator.verifyMembership(a1, mem, nonce1, witness1, n1);
             }
